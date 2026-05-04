@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: チェックアウト
+        uses: actions/checkout@v4
+
+      - name: 依存ツールのインストール
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y gcc make cppcheck lcov
+
+      - name: ビルド
+        run: make build/calculator
+
+      - name: 単体テスト
+        run: make test
+
+      - name: 静的コード解析
+        run: make lint
+
+      - name: カバレッジ計測
+        run: make coverage
+
+      - name: カバレッジレポートのアップロード
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: build/cov/html/
