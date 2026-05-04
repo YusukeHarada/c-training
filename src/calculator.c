@@ -4,6 +4,7 @@
  */
 #include <stddef.h>
 #include "calculator.h"
+#include <limits.h>
 
 int calc_add(int a, int b)
 {
@@ -43,4 +44,12 @@ int calc_modulo(int a, int b, int *result)
   return CALC_OK;
 }
 
-
+/* a + b が INT_MAX を超える、または INT_MIN を下回る場合はCALC_ERR_OVERFLOW を返す */
+int calc_add_safe(int a, int b, int *result)
+{
+  if ( (b > 0 && a > INT_MAX -b ) || (b < 0 && a < INT_MIN - b) ) {
+    return CALC_ERR_OVERFLOW;
+  }
+  *result =  a + b;
+  return CALC_OK;
+}

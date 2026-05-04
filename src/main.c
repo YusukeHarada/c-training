@@ -4,6 +4,7 @@
  */
 #include <stdio.h>
 #include "calculator.h"
+#include <limits.h>
 
 int main(void)
 {
@@ -27,6 +28,9 @@ int main(void)
 
     calc_modulo(10, 3, &result);
     printf("10 modulo 3 = %d\n", result);
+
+    calc_add_safe(1, 2, &result);
+    printf("1 + 2 = %d\n", result);
 
     return 0;
 }

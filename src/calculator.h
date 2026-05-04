@@ -10,6 +10,7 @@
 /* エラーコード */
 #define CALC_OK            0
 #define CALC_ERR_DIV_ZERO -1
+#define CALC_ERR_OVERFLOW -2
 
 /**
  * @brief 加算
@@ -44,7 +45,11 @@ int calc_multiply(int a, int b);
  */
 int calc_divide(int a, int b, int *result);
 
-int calc_modulo(int a, int b, int *result);
 /* b が 0 のとき CALC_ERR_DIV_ZERO を返す */
+int calc_modulo(int a, int b, int *result);
+
+/* 新しいシグネチャ */
+int calc_add_safe(int a, int b, int *result);
+/* a + b が INT_MAX を超える、または INT_MIN を下回る場合はCALC_ERR_OVERFLOW を返す */
 
 #endif /* CALCULATOR_H */

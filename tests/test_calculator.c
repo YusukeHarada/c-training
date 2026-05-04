@@ -172,6 +172,38 @@ void test_modulo_normal(void)
   TEST_ASSERT_EQUAL_INT(CALC_OK, ret);
   TEST_ASSERT_EQUAL_INT(2, result);
 }
+void test_modulo_by_zero(void)
+{
+  int result = 0;
+  int ret = calc_modulo(1,0,&result);
+  TEST_ASSERT_EQUAL_INT(CALC_ERR_DIV_ZERO, ret);
+}
+
+/* ============================================================
+ * calc_add_safe のテスト
+ * ============================================================ */
+void test_add_safe_normal(void)
+{
+  int result = 0;
+  int ret = calc_add_safe(1,2,&result);
+  TEST_ASSERT_EQUAL_INT(CALC_OK, ret);
+  TEST_ASSERT_EQUAL_INT(3, result);
+
+}
+
+void test_add_safe_overflow(void)
+{
+  int result = 0;
+  int ret = calc_add_safe(INT_MAX,INT_MAX,&result);
+  TEST_ASSERT_EQUAL_INT(CALC_ERR_OVERFLOW, ret);
+}
+
+void test_add_safe_underflow(void)
+{
+  int result = 0;
+  int ret = calc_add_safe(-10,INT_MIN,&result);
+  TEST_ASSERT_EQUAL_INT(CALC_ERR_OVERFLOW, ret);
+}
 
 /* ============================================================
  * テストランナー（main）
@@ -211,6 +243,12 @@ int main(void)
 
     /* calc_modulo */
     RUN_TEST(test_modulo_normal);
+    RUN_TEST(test_modulo_by_zero);
+
+    /* calc_add_safe */
+    RUN_TEST(test_add_safe_normal);
+    RUN_TEST(test_add_safe_overflow);
+    RUN_TEST(test_add_safe_underflow);
 
     return UnityEnd();
 }
