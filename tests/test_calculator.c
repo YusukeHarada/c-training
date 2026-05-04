@@ -9,6 +9,7 @@
  */
 #include "../unity/unity.h"
 #include "../src/calculator.h"
+#include<limits.h>
 
 /* ============================================================
  * setUp / tearDown
@@ -31,13 +32,23 @@ void test_add_with_zero(void)
     TEST_ASSERT_EQUAL_INT(5, calc_add(5, 0));
     TEST_ASSERT_EQUAL_INT(5, calc_add(0, 5));
 }
-
 void test_add_negative_numbers(void)
 {
     TEST_ASSERT_EQUAL_INT(-3, calc_add(-10, 7));
     TEST_ASSERT_EQUAL_INT(-13, calc_add(-10, -3));
 }
 
+void test_add_large_numbers(void)
+{
+  TEST_ASSERT_EQUAL_INT(3000, calc_add(1000, 2000));
+}
+
+void test_add_overflow(void)
+{
+  int result = calc_add(INT_MAX, INT_MAX);
+  printf("INT_MAX+INT_MAX= %d\n", result);
+  TEST_PASS();
+}
 /* ============================================================
  * calc_subtract のテスト
  * ============================================================ */
@@ -54,6 +65,11 @@ void test_subtract_result_zero(void)
 void test_subtract_result_negative(void)
 {
     TEST_ASSERT_EQUAL_INT(-3, calc_subtract(0, 3));
+}
+
+void test_subtract_negative_from_negative(void)
+{
+  TEST_ASSERT_EQUAL_INT(-2, calc_subtract(-5, -3));
 }
 
 /* ============================================================
@@ -74,6 +90,11 @@ void test_multiply_negative_numbers(void)
 {
     TEST_ASSERT_EQUAL_INT(-30, calc_multiply(-10, 3));
     TEST_ASSERT_EQUAL_INT(30,  calc_multiply(-10, -3));
+}
+
+void test_multiply_large_numbers(void)
+{
+  TEST_ASSERT_EQUAL_INT(10000, calc_multiply(100, 100));
 }
 
 /* ============================================================
@@ -117,6 +138,29 @@ void test_divide_zero_by_nonzero(void)
     TEST_ASSERT_EQUAL_INT(0, result);
 }
 
+void test_divide_negative_dividend(void)
+{
+  int result = 0;
+  int ret = calc_divide(-10, 3, &result);
+  TEST_ASSERT_EQUAL_INT(CALC_OK, ret);
+  TEST_ASSERT_EQUAL_INT(-3, result);
+}
+
+void test_divide_by_minus(void)
+{
+  int result = 0;
+  int ret = calc_divide(-10, -1, &result);
+  TEST_ASSERT_EQUAL_INT(CALC_OK, ret);
+  TEST_ASSERT_EQUAL_INT(10, result);
+}
+
+void test_divide_by_zero(void)
+{
+  int result = 0;
+  int ret = calc_divide(0, 0, &result);
+  TEST_ASSERT_EQUAL_INT(CALC_ERR_DIV_ZERO, ret);
+}
+
 /* ============================================================
  * テストランナー（main）
  * ============================================================ */
@@ -128,16 +172,20 @@ int main(void)
     RUN_TEST(test_add_positive_numbers);
     RUN_TEST(test_add_with_zero);
     RUN_TEST(test_add_negative_numbers);
+    RUN_TEST(test_add_large_numbers);
+    RUN_TEST(test_add_overflow);
 
     /* calc_subtract */
     RUN_TEST(test_subtract_positive_numbers);
     RUN_TEST(test_subtract_result_zero);
     RUN_TEST(test_subtract_result_negative);
+    RUN_TEST(test_subtract_negative_from_negative);
 
     /* calc_multiply */
     RUN_TEST(test_multiply_positive_numbers);
     RUN_TEST(test_multiply_by_zero);
     RUN_TEST(test_multiply_negative_numbers);
+    RUN_TEST(test_multiply_large_numbers);
 
     /* calc_divide */
     RUN_TEST(test_divide_normal);
@@ -145,6 +193,9 @@ int main(void)
     RUN_TEST(test_divide_by_zero_returns_error);
     RUN_TEST(test_divide_result_null_pointer);
     RUN_TEST(test_divide_zero_by_nonzero);
+    RUN_TEST(test_divide_negative_dividend);
+    RUN_TEST(test_divide_by_minus);
+    RUN_TEST(test_divide_by_zero);
 
     return UnityEnd();
 }

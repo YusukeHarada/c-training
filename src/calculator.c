@@ -30,3 +30,4 @@ int calc_divide(int a, int b, int *result)
     }
     return CALC_OK;
 }
+
