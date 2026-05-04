@@ -162,6 +162,18 @@ void test_divide_by_zero(void)
 }
 
 /* ============================================================
+ * calc_modulo のテスト
+ * ============================================================ */
+
+void test_modulo_normal(void)
+{
+  int result = 0;
+  int ret = calc_modulo(8, 3, &result);
+  TEST_ASSERT_EQUAL_INT(CALC_OK, ret);
+  TEST_ASSERT_EQUAL_INT(2, result);
+}
+
+/* ============================================================
  * テストランナー（main）
  * ============================================================ */
 int main(void)
@@ -196,6 +208,9 @@ int main(void)
     RUN_TEST(test_divide_negative_dividend);
     RUN_TEST(test_divide_by_minus);
     RUN_TEST(test_divide_by_zero);
+
+    /* calc_modulo */
+    RUN_TEST(test_modulo_normal);
 
     return UnityEnd();
 }

@@ -44,4 +44,7 @@ int calc_multiply(int a, int b);
  */
 int calc_divide(int a, int b, int *result);
 
+int calc_modulo(int a, int b, int *result);
+/* b が 0 のとき CALC_ERR_DIV_ZERO を返す */
+
 #endif /* CALCULATOR_H */

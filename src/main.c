@@ -25,5 +25,8 @@ int main(void)
         printf("10 / 0 = エラー（ゼロ除算）\n");
     }
 
+    calc_modulo(10, 3, &result);
+    printf("10 modulo 3 = %d\n", result);
+
     return 0;
 }
