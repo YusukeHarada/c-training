@@ -40,7 +40,7 @@ test: $(BUILD_DIR)/test_calculator
 
 $(BUILD_DIR)/test_calculator: $(SRCS) $(TESTS) $(UNITY)
 	@mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -I$(SRC_DIR) -I$(UNITY_DIR) $^ -o $@
+	$(CC) $(CFLAGS) -DUNITY_INCLUDE_CONFIG_H -I$(SRC_DIR) -I$(UNITY_DIR) $^ -o $@
 
 # -------------------------------------------------------
 # カバレッジ計測
