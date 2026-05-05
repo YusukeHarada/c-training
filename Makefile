@@ -48,7 +48,7 @@ $(BUILD_DIR)/test_calculator: $(SRCS) $(TESTS) $(UNITY)
 .PHONY: coverage
 coverage:
 	@mkdir -p $(BUILD_DIR)/cov
-	$(CC) $(CFLAGS) $(COVFLAGS) -I$(SRC_DIR) -I$(UNITY_DIR) \
+	$(CC) $(CFLAGS) -DUNITY_INCLUDE_CONFIG_H $(COVFLAGS) -I$(SRC_DIR) -I$(UNITY_DIR) \
 	    $(SRCS) $(TESTS) $(UNITY) -o $(BUILD_DIR)/test_cov
 	./$(BUILD_DIR)/test_cov
 	lcov --capture --directory . \
